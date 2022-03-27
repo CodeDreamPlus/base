@@ -14,12 +14,12 @@
 
 #### 1.引入
 
-在项目的pom.xml引入codedream-auto依赖，如下：
+在项目的pom.xml引入codedream-base依赖，如下：
 
 ```xml
 <dependency>
     <groupId>com.codedream</groupId>
-    <artifactId>codedream-auto</artifactId>
+    <artifactId>codedream-base</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -166,5 +166,6 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
 ```
 
 ## 参考
+* Java Spi: https://www.developer.com/java/service-provider-interface-creating-extensible-java-applications/
 * Google Auto: https://github.com/google/auto
 * SpringBoot自动配置: https://docs.spring.io/spring-boot/docs/2.6.4/reference/htmlsingle/#using.auto-configuration

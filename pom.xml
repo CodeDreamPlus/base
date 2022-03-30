@@ -26,7 +26,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <!--配置文件处理器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -42,13 +48,16 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.plugin.version}</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
+                    <!--在编译阶段如果不指定annotationProcessorPaths并且classpath下META-INFO/services目录文件中存在自定义注解处理器，
+                    这种情况下编译会报“配置错误”，因为文件还未被完全编译完就被调用，此时可以使用hibernate-validator-annotation-processor注解处理器或者lombok注解处理器以此避免执行自定义注解处理器-->
                     <annotationProcessorPaths>
+                        <!--这里使用lombok处理器是因为项目中用到了相关注解，否则可以使用hibernate-validator-annotation-processor -->
                         <path>
-                            <groupId>org.hibernate.validator</groupId>
-                            <artifactId>hibernate-validator-annotation-processor</artifactId>
-                            <version>6.0.13.Final</version>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.16</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

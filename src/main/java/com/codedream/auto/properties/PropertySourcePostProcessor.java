@@ -13,7 +13,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -34,11 +33,11 @@ import java.util.stream.Collectors;
  * 自定义资源文件读取，优先级最低
  */
 @Slf4j
-public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProcessor, InitializingBean, Ordered {
+public class PropertySourcePostProcessor implements BeanFactoryPostProcessor, InitializingBean, Ordered {
 	private final ResourceLoader resourceLoader;
 	private final List<PropertySourceLoader> propertySourceLoaders;
 
-	public CodeDreamPropertySourcePostProcessor() {
+	public PropertySourcePostProcessor() {
 		this.resourceLoader = new DefaultResourceLoader();
 		this.propertySourceLoaders = SpringFactoriesLoader.loadFactories(PropertySourceLoader.class, getClass().getClassLoader());
 	}
@@ -46,7 +45,7 @@ public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProc
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		log.info("PropertySourcePostProcessor process @CodeDreamPropertySource bean.");
-		Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(CodeDreamPropertySource.class);
+		Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(PropertySource.class);
 		Set<Map.Entry<String, Object>> beanEntrySet = beansWithAnnotation.entrySet();
 		// 没有 @YmlPropertySource 注解，跳出
 		if (beanEntrySet.isEmpty()) {
@@ -57,7 +56,7 @@ public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProc
 		List<PropertyFile> propertyFileList = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : beanEntrySet) {
 			Class<?> beanClass = ClassUtils.getUserClass(entry.getValue());
-			CodeDreamPropertySource propertySource = AnnotationUtils.getAnnotation(beanClass, CodeDreamPropertySource.class);
+			PropertySource propertySource = AnnotationUtils.getAnnotation(beanClass, PropertySource.class);
 			if (propertySource == null) {
 				continue;
 			}
@@ -85,7 +84,7 @@ public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProc
 
 		// 只支持 activeProfiles，没有必要支持 spring.profiles.include。
 		String[] activeProfiles = environment.getActiveProfiles();
-		ArrayList<PropertySource> propertySourceList = new ArrayList<>();
+		ArrayList<org.springframework.core.env.PropertySource> propertySourceList = new ArrayList<>();
 		for (String profile : activeProfiles) {
 			for (PropertyFile propertyFile : sortedPropertyList) {
 				// 不加载 ActiveProfile 的配置文件
@@ -113,14 +112,14 @@ public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProc
 			loadPropertySource(location, resource, loader, propertySourceList);
 		}
 		// 转存
-		for (PropertySource propertySource : propertySourceList) {
+		for (org.springframework.core.env.PropertySource propertySource : propertySourceList) {
 			propertySources.addLast(propertySource);
 		}
 	}
 
 	private static void loadPropertySource(String location, Resource resource,
 										   PropertySourceLoader loader,
-										   List<PropertySource> sourceList) {
+										   List<org.springframework.core.env.PropertySource> sourceList) {
 		if (resource.exists()) {
 			String name = "CodeDreamPropertySource: [" + location + "]";
 			try {

@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface CodeDreamPropertySource {
+public @interface PropertySource {
 
 	/**
 	 * Indicate the resource location(s) of the properties file to be loaded.

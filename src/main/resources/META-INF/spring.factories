@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.codedream.auto.properties.PropertySourcePostProcessor
+com.codedream.auto.properties.CodeDreamPropertySourcePostProcessor

@@ -35,11 +35,11 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class PropertySourcePostProcessor implements BeanFactoryPostProcessor, InitializingBean, Ordered {
+public class CodeDreamPropertySourcePostProcessor implements BeanFactoryPostProcessor, InitializingBean, Ordered {
     private final ResourceLoader resourceLoader;
     private final List<PropertySourceLoader> propertySourceLoaders;
 
-    public PropertySourcePostProcessor() {
+    public CodeDreamPropertySourcePostProcessor() {
         this.resourceLoader = new DefaultResourceLoader();
         this.propertySourceLoaders = SpringFactoriesLoader.loadFactories(PropertySourceLoader.class, getClass().getClassLoader());
     }
@@ -47,7 +47,7 @@ public class PropertySourcePostProcessor implements BeanFactoryPostProcessor, In
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         log.info("PropertySourcePostProcessor process @PropertySource bean.");
-        Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(PropertySource.class);
+        Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(CodeDreamPropertySource.class);
         Set<Map.Entry<String, Object>> beanEntrySet = beansWithAnnotation.entrySet();
         // 没有 @YmlPropertySource 注解，跳出
         if (beanEntrySet.isEmpty()) {
@@ -58,7 +58,7 @@ public class PropertySourcePostProcessor implements BeanFactoryPostProcessor, In
         List<PropertyFile> propertyFileList = new ArrayList<>();
         for (Map.Entry<String, Object> entry : beanEntrySet) {
             Class<?> beanClass = ClassUtils.getUserClass(entry.getValue());
-            PropertySource propertySource = AnnotationUtils.getAnnotation(beanClass, PropertySource.class);
+            CodeDreamPropertySource propertySource = AnnotationUtils.getAnnotation(beanClass, CodeDreamPropertySource.class);
             if (propertySource == null) {
                 continue;
             }

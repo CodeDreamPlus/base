@@ -55,8 +55,6 @@ public class AutoServiceProcessor extends AbstractProcessor {
 
     /**
      * 获取所支持的所有注解类型
-     *
-     * @return {@link Set<String>}
      */
     @Override
     public Set<String> getSupportedAnnotationTypes() {

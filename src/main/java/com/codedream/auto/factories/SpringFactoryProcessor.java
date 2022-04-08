@@ -16,6 +16,7 @@ import static java.lang.String.join;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static javax.tools.StandardLocation.CLASS_OUTPUT;
+
 /**
  * <p>Description: [自动配置注解类型]</p >
  * Created on 2022-03-17
@@ -82,10 +83,11 @@ public class SpringFactoryProcessor extends AbstractProcessor {
                 });
     }
 
+
     /**
-     * 向SpringFactories文件写入配置
+     * writeSpringFactoriesFile
      *
-     * @throws IOException
+     * @throws IOException 抛出io异常
      */
     protected void writeSpringFactoriesFile() throws IOException {
         if (factories.isEmpty()) {

@@ -5,10 +5,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.codedream</groupId>
-    <artifactId>codedream-base</artifactId>
-    <name>${project.artifactId}</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>com.codedreamplus</groupId>
+    <artifactId>codedreamplus-base</artifactId>
+    <version>1.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Java spi、spring.factories文件自动生成工具</description>
+    <url>https://github.com/CodeDreamPlus/codedream-base.git</url>
+
 
     <properties>
         <java.version>11</java.version>
@@ -19,6 +22,28 @@
         <spring.cloud.version>Hoxton.SR10</spring.cloud.version>
         <spring.platform.version>Cairo-SR8</spring.platform.version>
     </properties>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>mo</name>
+            <email>13930153501@163.com</email>
+            <organization>com.codedreamplus</organization>
+            <organizationUrl>https://www.codedreamplus.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/CodeDreamPlus/codedream-base.git</connection>
+        <developerConnection>scm:git:ssh://github.com:CodeDreamPlus/codedream-base.git</developerConnection>
+        <url>https://github.com/CodeDreamPlus/codedream-base/tree/main</url>
+    </scm>
 
     <dependencies>
         <!--Spring-->
@@ -41,29 +66,106 @@
     </dependencies>
     <packaging>jar</packaging>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.plugin.version}</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <!--在编译阶段如果不指定annotationProcessorPaths并且classpath下META-INFO/services目录文件中存在自定义注解处理器，
-                    这种情况下编译会报“配置错误”，因为文件还未被完全编译完就被调用，此时可以使用hibernate-validator-annotation-processor注解处理器或者lombok注解处理器以此避免执行自定义注解处理器-->
-                    <annotationProcessorPaths>
-                        <!--这里使用lombok处理器是因为项目中用到了相关注解，否则可以使用hibernate-validator-annotation-processor -->
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.16</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <finalName>${project.artifactId}</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven.plugin.version}</version>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                            <!--在编译阶段如果不指定annotationProcessorPaths并且classpath下META-INFO/services目录文件中存在自定义注解处理器，
+                            这种情况下编译会报“配置错误”，因为文件还未被完全编译完就被调用，此时可以使用hibernate-validator-annotation-processor注解处理器或者lombok注解处理器以此避免执行自定义注解处理器-->
+                            <annotationProcessorPaths>
+                                <!--这里使用lombok处理器是因为项目中用到了相关注解，否则可以使用hibernate-validator-annotation-processor -->
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                    <version>1.18.16</version>
+                                </path>
+                            </annotationProcessorPaths>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <configuration>
+                            <source>8</source>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+
+            </build>
+            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
+        </profile>
+    </profiles>
 
     <dependencyManagement>
         <dependencies>
@@ -90,4 +192,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+
 </project>

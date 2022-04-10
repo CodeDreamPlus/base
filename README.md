@@ -1,10 +1,10 @@
-# codedream-base
+# base
 
 **`Java spi`、`spring.factories`文件自动生成工具。**
 
 ## 使用场景
-* 组件自动配置:比如封装了个公共组件(codedream-starter-mybatis),A项目pom.xml引入了该组件，当A项目启动自动加载该组件中MybatisPlusConfiguration这个配置类，由此可省略包扫描@ComponentScan(basePackages = {"com.codedream.mybatis"})
-* 编译阶段自动生成spi配置文件，多用于公共包提供统一接口规范，各模块或各服务具体实现并应用，比如spi经典案例 **jdbc的设计**,spi还可实现根据环境profile动态读取响应配置，案例可参见codedream-base-demo
+* 组件自动配置:比如封装了个公共组件(codedreamplus-mybatis),A项目pom.xml引入了该组件，当A项目启动自动加载该组件中MybatisPlusConfiguration这个配置类，由此可省略包扫描@ComponentScan(basePackages = {"com.codedreamplus.mybatis"})
+* 编译阶段自动生成spi配置文件，多用于公共包提供统一接口规范，各模块或各服务具体实现并应用，比如spi经典案例 **jdbc的设计**,spi还可实现根据环境profile动态读取响应配置，案例可参见base-demo
 
 ## 主要特性
 * 编译时自动生成 `java spi`文件
@@ -14,13 +14,13 @@
 
 #### 1.引入
 
-在项目的pom.xml引入codedream-base依赖，如下：
+在项目的pom.xml引入codedreamplus-base依赖，如下：
 
 ```xml
 <dependency>
-    <groupId>com.codedream</groupId>
-    <artifactId>codedream-base</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>com.codedreamplus</groupId>
+    <artifactId>codedreamplus-base</artifactId>
+    <version>1.0.2</version>
 </dependency>
 ```
 

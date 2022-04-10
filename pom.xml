@@ -7,10 +7,10 @@
 
     <groupId>com.codedreamplus</groupId>
     <artifactId>codedreamplus-base</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Java spi、spring.factories文件自动生成工具</description>
-    <url>https://github.com/CodeDreamPlus/codedream-base.git</url>
+    <url>https://github.com/CodeDreamPlus/base.git</url>
 
 
     <properties>
@@ -40,9 +40,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/CodeDreamPlus/codedream-base.git</connection>
-        <developerConnection>scm:git:ssh://github.com:CodeDreamPlus/codedream-base.git</developerConnection>
-        <url>https://github.com/CodeDreamPlus/codedream-base/tree/main</url>
+        <connection>scm:git:git://github.com/CodeDreamPlus/base.git</connection>
+        <developerConnection>scm:git:ssh://github.com:CodeDreamPlus/base.git</developerConnection>
+        <url>https://github.com/CodeDreamPlus/base/tree/main</url>
     </scm>
 
     <dependencies>

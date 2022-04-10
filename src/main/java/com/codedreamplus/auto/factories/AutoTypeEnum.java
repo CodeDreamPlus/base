@@ -1,4 +1,4 @@
-package com.codedream.auto.factories;
+package com.codedreamplus.auto.factories;
 
 /**
  * <p>Description: [自动配置注解类型]</p >

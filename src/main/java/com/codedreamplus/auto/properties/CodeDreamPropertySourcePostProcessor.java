@@ -1,4 +1,4 @@
-package com.codedream.auto.properties;
+package com.codedreamplus.auto.properties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
